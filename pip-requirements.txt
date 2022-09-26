@@ -1,0 +1,6 @@
+wheel==0.37.1
+cryptography==38.0.1
+ansible==6.4.0
+ansible-lint==6.7.0
+kubernetes==24.2.0
+pyvmomi==7.0.3

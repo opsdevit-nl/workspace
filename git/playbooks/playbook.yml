@@ -1,0 +1,20 @@
+---
+  - hosts: localhost
+    gather_facts: false
+    connection: local
+
+    tasks:
+      - name: ping localhost
+        ping:
+
+      - name: Get an existing Service object
+        kubernetes.core.k8s_info:
+          api_version: v1
+          kind: Service
+          name: wordpress
+          namespace: default
+          kubeconfig: /ansible/.kube/config
+        register: k8s
+
+      - debug:
+          var: k8s   
