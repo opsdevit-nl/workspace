@@ -4,13 +4,6 @@ ENV OC_VERSION=stable-4.11
 ENV KUSTOMIZE_VERSION=v4.5.7
 ENV KUBESEAL_VERSION=0.18.5
 
-# layer for installing dependencies for Ansbile
-RUN apk update \
-  && apk add --no-cache --progress python3 openssl ca-certificates git openssh sshpass \
-  && apk --progress --update add --virtual build-dependencies \
-  python3-dev py3-pip libffi-dev openssl-dev build-base bash curl wget tar gcompat \
-  && rm -rf /var/cache/apk/* 
-
 # layer for installing oc client
 RUN wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/${OC_VERSION}/openshift-client-linux.tar.gz \
   && tar xvzf openshift-client-linux.tar.gz oc kubectl \
@@ -31,6 +24,13 @@ RUN wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUB
   && rm kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz
 
 WORKDIR /ansible
+
+# layer for installing dependencies for Ansbile
+RUN apk update \
+  && apk add --no-cache --progress python3 openssl ca-certificates git openssh sshpass \
+  && apk --progress --update add --virtual build-dependencies \
+  python3-dev py3-pip libffi-dev openssl-dev build-base bash curl wget tar gcompat \
+  && rm -rf /var/cache/apk/* 
 
 # layer for installing Ansible
 COPY ./pip-requirements.txt pip-requirements.txt
