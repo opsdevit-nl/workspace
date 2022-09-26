@@ -13,13 +13,13 @@ RUN wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/${OC_V
 
 # layer for kustomize
 RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz \
-  && tar xvf kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz kustomize\
+  && tar xvf kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz kustomize \
   && mv kustomize /usr/local/bin/kustomize \
   && rm kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz
 
 # layer for kubeseal
 RUN wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz \
-  && tar xvf kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz kubeseal\
+  && tar xvf kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz kubeseal \
   && mv kubeseal /usr/local/bin/kubeseal \
   && rm kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz
 
