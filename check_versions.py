@@ -52,11 +52,24 @@ if __name__ == "__main__":
         package_latest = subprocess.run("curl -s https://api.github.com/repos/" + package_name + " | jq -r .[].tag_name | grep ^v | sort -rV | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
       else:
         print("add config for new package")
+    
+    if kind == "oc":
+      package_latest = subprocess.run("curl -s  \"https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/\" | grep openshift-client.*linux.*tar.gz | head -n 1 | sed -r 's/^.*openshift-client-linux-(.*)\\.tar\\.gz.*/\\1/g'", shell=True, capture_output=True, text=True).stdout.strip()
 
-    print(package_current)
-    print(package_latest)
+    if kind == "ansible-role":
+      package_latest = subprocess.run("curl -s https://api.github.com/repos/" + package_name + " | jq -r .[].name | sort -Vr | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
+
+    if kind == "ansible-collection":
+      package_latest = subprocess.run("ansible-galaxy collection list kubernetes.core --format json | jq -r \".[] | .[].version\" | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
+
+    print("package name   :", package_name)
+    print("current version: ", package_current)
+    print("latest version : ", package_latest)
+
     if package_current == package_latest:
       print("matched\n")
+    elif package_latest == "":
+      print("error occurred\n")
     else:
       print("upgrade me\n")
     
