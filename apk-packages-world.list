@@ -1,0 +1,4 @@
+openssl=1.1.1q-r0
+ca-certificates=20220614-r0
+openssh=9.0_p1-r2
+sshpass=1.09-r0

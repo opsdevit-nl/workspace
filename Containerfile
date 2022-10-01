@@ -25,14 +25,15 @@ RUN wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUB
 
 WORKDIR /ansible
 
-# layer for installing dependencies for Ansbile
+# layers for installing dependencies for Ansbile
+COPY ./apk-packages-world.list apk-packages-world.list
+COPY ./apk-packages-virtual.list apk-packages-virtual.list
 RUN apk update \
-  && apk add --no-cache --progress python3 openssl ca-certificates git openssh sshpass \
-  && apk --progress --update add --virtual build-dependencies \
-  python3-dev py3-pip libffi-dev openssl-dev build-base bash curl wget tar gcompat \
+  && apk add --no-cache --progress $(cat apk-packages-world.list) \
+  && apk add --progress --update --virtual build-dependencies $(cat apk-packages-virtual.list)\
   && rm -rf /var/cache/apk/* 
 
-# layer for installing Ansible
+# layers for installing Ansible
 COPY ./pip-requirements.txt pip-requirements.txt
 RUN pip3 install --upgrade pip \
   && pip3 install -r pip-requirements.txt \ 
