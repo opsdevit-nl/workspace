@@ -10,3 +10,4 @@ curl=7.83.1-r3
 wget=1.21.3-r0
 tar=1.34-r0
 gcompat=1.0.0-r4
+jq=1.6-r1

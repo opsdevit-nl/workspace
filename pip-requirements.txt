@@ -4,3 +4,4 @@ ansible==6.4.0
 ansible-lint==6.7.0
 kubernetes==24.2.0
 pyvmomi==7.0.3
+yolk3k==0.9
