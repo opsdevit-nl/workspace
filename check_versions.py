@@ -81,4 +81,5 @@ if __name__ == "__main__":
         versionfile.write(kind + " " + package_name + " " + package_latest + "\n")  
     
     ### TODO
-    ### container builden en tests draaien
+    ### pipeline werk:
+    ### versies in files/Containerfile aanpassen op basis van gegenereerde versions_run.ini, nieuwe container builden en tests draaien

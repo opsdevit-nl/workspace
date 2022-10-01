@@ -46,7 +46,7 @@ RUN ansible-galaxy install -r requirements.yml
 ENV KUBECONFIG=/ansible/.kube/config
 ENV ANSIBLE_VAULT_PASSWORD_FILE=/ansible/vaultpass
 
-COPY check_versions.py ./
+COPY versions.ini check_versions.py test_version_check.sh ./
 
 COPY ./entrypoint.sh entrypoint.sh
 ENTRYPOINT ["bash","entrypoint.sh"]
