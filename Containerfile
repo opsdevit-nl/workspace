@@ -26,8 +26,7 @@ RUN wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUB
 WORKDIR /ansible
 
 # layers for installing dependencies for Ansbile
-COPY ./apk-packages-world.list apk-packages-world.list
-COPY ./apk-packages-virtual.list apk-packages-virtual.list
+COPY ./apk-packages-world.list ./apk-packages-virtual.list ./
 RUN apk update \
   && apk add --no-cache --progress $(cat apk-packages-world.list) \
   && apk add --progress --update --virtual build-dependencies $(cat apk-packages-virtual.list) \
