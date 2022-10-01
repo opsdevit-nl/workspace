@@ -17,7 +17,7 @@ def get_packages(kind):
   for line in lines:
     if line.startswith(kind):
       versions.append(line)
-
+  # print("versions", versions)
   return versions
 
 if __name__ == "__main__":
@@ -49,7 +49,7 @@ if __name__ == "__main__":
       if "kustomize" in package_name:
         # print("echoo")
         package_latest = subprocess.run("curl -s \"https://api.github.com/repos/" + package_name + "\"" + " | jq -r .[].tag_name | grep kustomize | sort -Vr | sed -r 's/^kustomize\\/(.*)/\\1/g' | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
-      if "sealed-secrets" in package_name:
+      elif "sealed-secrets" in package_name:
         package_latest = subprocess.run("curl -s \"https://api.github.com/repos/" + package_name + "\"" + " | jq -r .[].tag_name | grep ^v | sort -rV | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
       else:
         print("add config for new package")
