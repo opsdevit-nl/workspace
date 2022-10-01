@@ -31,7 +31,8 @@ COPY ./apk-packages-virtual.list apk-packages-virtual.list
 RUN apk update \
   && apk add --no-cache --progress $(cat apk-packages-world.list) \
   && apk add --progress --update --virtual build-dependencies $(cat apk-packages-virtual.list) \
-  && rm -rf /var/cache/apk/* 
+  && rm -rf /var/cache/apk/* \
+  && apk list --installed > /apk-freeze.txt 
 
 # layers for installing Ansible
 COPY ./pip-requirements.txt pip-requirements.txt
