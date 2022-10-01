@@ -2,6 +2,7 @@
 
 import sys
 import subprocess
+import os
 
 with open(sys.argv[1]) as versionfile:
   lines = [line.rstrip() for line in versionfile]
@@ -47,9 +48,9 @@ if __name__ == "__main__":
     if kind == "github":
       if "kustomize" in package_name:
         # print("echoo")
-        package_latest = subprocess.run("curl -s https://api.github.com/repos/" + package_name + " | jq -r .[].tag_name | grep kustomize | sort -Vr | sed -r 's/^kustomize\\/(.*)/\\1/g' | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
+        package_latest = subprocess.run("curl -s \"https://api.github.com/repos/" + package_name + "\"" + " | jq -r .[].tag_name | grep kustomize | sort -Vr | sed -r 's/^kustomize\\/(.*)/\\1/g' | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
       if "sealed-secrets" in package_name:
-        package_latest = subprocess.run("curl -s https://api.github.com/repos/" + package_name + " | jq -r .[].tag_name | grep ^v | sort -rV | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
+        package_latest = subprocess.run("curl -s \"https://api.github.com/repos/" + package_name + "\"" + " | jq -r .[].tag_name | grep ^v | sort -rV | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
       else:
         print("add config for new package")
     
@@ -57,7 +58,7 @@ if __name__ == "__main__":
       package_latest = subprocess.run("curl -s  \"https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/\" | grep openshift-client.*linux.*tar.gz | head -n 1 | sed -r 's/^.*openshift-client-linux-(.*)\\.tar\\.gz.*/\\1/g'", shell=True, capture_output=True, text=True).stdout.strip()
 
     if kind == "ansible-role":
-      package_latest = subprocess.run("curl -s https://api.github.com/repos/" + package_name + " | jq -r .[].name | sort -Vr | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
+      package_latest = subprocess.run("curl -s \"https://api.github.com/repos/" + package_name + "\"" + " | jq -r .[].name | sort -Vr | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
 
     if kind == "ansible-collection":
       package_latest = subprocess.run("ansible-galaxy collection list kubernetes.core --format json | jq -r \".[] | .[].version\" | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
@@ -68,10 +69,16 @@ if __name__ == "__main__":
 
     if package_current == package_latest:
       print("matched\n")
+      with open('versions_run.ini', 'a') as versionfile:
+        versionfile.write(kind + " " + package_name + " " + package_current + "\n")  
     elif package_latest == "":
       print("error occurred\n")
+      with open('versions_run.ini', 'a') as versionfile:
+        versionfile.write(kind + " " + package_name + " " + package_current + "\n")  
     else:
       print("upgrade me\n")
+      with open('versions_run.ini', 'a') as versionfile:
+        versionfile.write(kind + " " + package_name + " " + package_latest + "\n")  
     
     ### TODO
-    ### als geen match dan latest pushen naar nieuwe version file, container builden en tests draaien
+    ### container builden en tests draaien
