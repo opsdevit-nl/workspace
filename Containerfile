@@ -25,6 +25,7 @@ RUN wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUB
 
 WORKDIR /ansible
 
+
 # layers for installing dependencies for Ansbile
 COPY ./apk-packages-world.list ./apk-packages-virtual.list ./
 RUN apk update \
@@ -44,6 +45,8 @@ RUN ansible-galaxy install -r requirements.yml
 
 ENV KUBECONFIG=/ansible/.kube/config
 ENV ANSIBLE_VAULT_PASSWORD_FILE=/ansible/vaultpass
+
+COPY check_versions.py ./
 
 COPY ./entrypoint.sh entrypoint.sh
 ENTRYPOINT ["bash","entrypoint.sh"]
