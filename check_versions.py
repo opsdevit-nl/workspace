@@ -61,7 +61,7 @@ if __name__ == "__main__":
       package_latest = subprocess.run("curl -s \"https://api.github.com/repos/" + package_name + "\"" + " | jq -r .[].name | sort -Vr | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
 
     if kind == "ansible-collection":
-      package_latest = subprocess.run("ansible-galaxy collection list kubernetes.core --format json | jq -r \".[] | .[].version\" | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
+      package_latest = subprocess.run("ansible-galaxy collection list" + package_name + "--format json | jq -r \".[] | .[].version\" | head -n 1", shell=True, capture_output=True, text=True).stdout.strip()
 
     print("package name   : ", package_name)
     print("current version: ", package_current)
